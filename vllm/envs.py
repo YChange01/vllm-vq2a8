@@ -265,6 +265,10 @@ if TYPE_CHECKING:
     VLLM_ROCM_FP8_MFMA_PAGE_ATTN: bool = False
     VLLM_ALLREDUCE_USE_SYMM_MEM: bool = True
     VLLM_ALLREDUCE_USE_FLASHINFER: bool = True
+    VLLM_VQ2_BACKEND: Literal["decode_fp8", "direct"] = "decode_fp8"
+    VLLM_VQ2_PREP_BACKEND: Literal["auto", "cuda", "triton"] = "auto"
+    VLLM_VQ2_GEMM_BACKEND: Literal["auto", "cuda", "triton"] = "auto"
+    VLLM_VQ2_CUDA_LIBRARY: str | None = None
     VLLM_TUNED_CONFIG_FOLDER: str | None = None
     VLLM_ENABLE_STARTUP_PLAN: bool = False
     VLLM_GPT_OSS_SYSTEM_TOOL_MCP_LABELS: set[str] = set()
@@ -1868,6 +1872,18 @@ environment_variables: dict[str, Callable[[], Any]] = {
     "VLLM_ALLREDUCE_USE_FLASHINFER": lambda: bool(
         int(os.getenv("VLLM_ALLREDUCE_USE_FLASHINFER", "1"))
     ),
+    # VQ2A8 expert backend. decode_fp8 preserves the compatibility path;
+    # direct consumes TP-local packed VQ2 artifacts without expanded weights.
+    "VLLM_VQ2_BACKEND": env_with_choices(
+        "VLLM_VQ2_BACKEND", "decode_fp8", ["decode_fp8", "direct"]
+    ),
+    "VLLM_VQ2_PREP_BACKEND": env_with_choices(
+        "VLLM_VQ2_PREP_BACKEND", "auto", ["auto", "cuda", "triton"]
+    ),
+    "VLLM_VQ2_GEMM_BACKEND": env_with_choices(
+        "VLLM_VQ2_GEMM_BACKEND", "auto", ["auto", "cuda", "triton"]
+    ),
+    "VLLM_VQ2_CUDA_LIBRARY": lambda: os.getenv("VLLM_VQ2_CUDA_LIBRARY"),
     # Experimental: use this to enable MCP tool calling for non harmony models
     "VLLM_USE_EXPERIMENTAL_PARSER_CONTEXT": lambda: bool(
         int(os.getenv("VLLM_USE_EXPERIMENTAL_PARSER_CONTEXT", "0"))
