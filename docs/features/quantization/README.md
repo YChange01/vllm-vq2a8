@@ -22,6 +22,7 @@ The following are the supported quantization formats for vLLM:
 - [Quantized KV Cache](quantized_kvcache.md)
 - [TorchAO](torchao.md)
 - [FP8 ViT Encoder Attention](fp8_vit_attn.md)
+- [VQ2A8 Routed Experts](vq2a8.md)
 
 ## Supported Hardware
 
@@ -58,6 +59,7 @@ th:not(:first-child) {
 | bitsandbytes              | ✅︎    | ✅︎     | ✅︎     | ✅︎  | ✅︎     | ❌      | ❌        | ❌      | ❌      |
 | DeepSpeedFP               | ✅︎    | ✅︎     | ✅︎     | ✅︎  | ✅︎     | ❌      | ❌        | ❌      | ❌      |
 | GGUF                      | ✅︎    | ✅︎     | ✅︎     | ✅︎  | ✅︎     | ✅︎      | ❌        | ❌      | ❌      |
+| VQ2A8 Routed Experts      | ❌    | ❌     | ❌     | ❌  | ✅︎     | ❌      | ❌        | ❌      | ❌      |
 
 - Volta refers to SM 7.0, Turing to SM 7.5, Ampere to SM 8.0/8.6, Ada to SM 8.9, and Hopper to SM 9.0.
 - ✅︎ indicates that the quantization method is supported on the specified hardware.
